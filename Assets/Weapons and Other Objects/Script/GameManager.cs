@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour {
 
     public Dungeon dungeon;
 
-
     public Player player1;
     public Player player2;
 
