@@ -6,6 +6,7 @@ using UnityEngine;
 /// This script deals with networking that goes on during the game, like instantiating the players.
 /// </summary>
 public class Networking2 : Photon.MonoBehaviour {
+
     public PhotonPlayer[] other;
     public Vector3 startingPos1;
     public Vector3 startingPos2;
@@ -17,9 +18,17 @@ public class Networking2 : Photon.MonoBehaviour {
     public int onlyOnce = 0;
     public GameObject playerPrefab;
 
+    public static Networking2 instance;
+
     public void Awake()
     {
-        StartCoroutine("InitDelay");
+        //StartCoroutine("InitDelay");
+        instance = this;
+    }
+
+    public void Start()
+    {
+        
     }
 
     public void StartGame()
@@ -48,6 +57,30 @@ public class Networking2 : Photon.MonoBehaviour {
         }
     }
 
+    public static GameObject CreatePlayer(Vector3 p1, Vector3 p2)
+    {
+        Debug.Log("Create player func");
+        instance.myView = PhotonView.Get(instance);
+        Debug.Log("my view is casuing it");
+        instance.self = PhotonNetwork.player;
+        instance.other = PhotonNetwork.otherPlayers;
+
+        if (instance.self.ID > instance.other[0].ID) instance.playerNum = 1;
+        if (instance.self.ID < instance.other[0].ID) instance.playerNum = 2;
+
+        if (instance.playerNum == 1)
+        {
+           return PhotonNetwork.Instantiate("OVRPlayerController", p1, Quaternion.identity, 0);
+        }
+        if (instance.playerNum == 2)
+        {
+            return PhotonNetwork.Instantiate("OVRPlayerController", p2, Quaternion.identity, 0);
+        }
+
+        Debug.Log("Create Player is returning null");
+        return null;
+    }
+
     public void InitPlayers()
     {
         Debug.Log("got into InitPlayers");
@@ -69,7 +102,6 @@ public class Networking2 : Photon.MonoBehaviour {
         yield return new WaitForSeconds(3);
         print("InitDelay continuing");
         StartGame();
-
     }
 
     [PunRPC]
@@ -92,6 +124,8 @@ public class Networking2 : Photon.MonoBehaviour {
             Debug.Log("It works. Seed is: " + worldSeed);
         }
     }
+
+
 
     
 }

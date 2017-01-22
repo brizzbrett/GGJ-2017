@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class PhotonNetworkController : MonoBehaviour {
 
+    static public PhotonNetworkController instance;
     public PhotonView myView;
 
-    public void Awake()
+    public void Start()
     {
-        myView = PhotonView.Get(this);
+        instance = this;
+        if(!this)
+        {
+            Debug.Log("THIS IS NULL");
+        }
+        instance.myView = PhotonView.Get(this);
     }
 
 
-	public void createNetObject(string name, Vector3 pos, Quaternion rot)
+	public static GameObject createNetObject(string name, Vector3 pos, Quaternion rot)
     {
-        PhotonNetwork.Instantiate(name, pos, rot, 0);
+        return PhotonNetwork.Instantiate(name, pos, rot, 0);
     }
 
-    public void callRPC(string name, object[] passedParams)
+    public static void callRPC(string name, object[] passedParams)
     {
-        myView.RPC(name, PhotonTargets.Others, passedParams);
+        instance.myView.RPC(name, PhotonTargets.Others, passedParams);
     }
 }

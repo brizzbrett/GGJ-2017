@@ -13,6 +13,7 @@ public class Networking : MonoBehaviour
     string roomName = "MidnightWar";
     RoomOptions roomOptions;
     private bool conn = false;
+    string gameScene = "sc2";//game scene
 
     private void OnGUI()
     {
@@ -95,7 +96,7 @@ public class Networking : MonoBehaviour
     {
         if (PhotonNetwork.room.PlayerCount == 2)
         {
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene(gameScene);
         }
     }
 
