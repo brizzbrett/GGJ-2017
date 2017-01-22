@@ -36,5 +36,6 @@ public class FireKatana : MonoBehaviour {
             SoundManager.StartSound(this.GetComponent<Sound>());
             Debug.Log("Hit somethin else?");
         }
+        GameManager.instance.EchoManager.AddPulse(transform.position, 1, 3, 100);
     }
 }

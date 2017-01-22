@@ -4,11 +4,6 @@ Shader "Custom/ScannerEffect"
 {
 	Properties{
 			_Color("Color", Color) = (1, 1, 1, 1)
-			//_Radius("Radius", float) = 0
-			//_Strength("Strength", float) = 1
-			//_Center2("CenterX2", vector) = (0, 0, 0)
-			//_Radius2("Radius2", float) = 0
-			_Pulses("Pulses",int) = 0
 	}
 	SubShader {
 
@@ -39,17 +34,17 @@ Shader "Custom/ScannerEffect"
 			}
 			
 			 float4 _Color;
-			 float3 _Centers[25];
-			 float3 _Center2;
-			 float _Strengths[25];
-			 float _Radius[25];
+			 float3 _Centers[9];
+			 float _Strengths[9];
+			 float _Radius[9];
 			 
-			int _Pulses;
+
 			float4 frag(v2f i) : SV_Target {
 				float preVal = 0;
 				float val = 0;
-				_Color.r = 1; _Color.g = _Color.b = 0; 
-				for (int j = 0; j < 20; j++)
+				_Color.r = 1; 
+				_Color.g = _Color.b = 0; 
+				for (int j = 0; j < 9; j++)
 				{
 					float dist = distance(_Centers[j], i.worldPos);
 					//val = 1 - step(dist, diff * 0.1) * 0.5;

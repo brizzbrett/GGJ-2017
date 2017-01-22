@@ -32,7 +32,8 @@ public class FireProjectile : MonoBehaviour {
         Vector3 localOffset = projectile.position;
 
         //clone = Instantiate(projectile, localOffset, transform.rotation);
-        clone = PhotonNetworkController.createNetObject(projectile.name, transform.position, transform.rotation).transform;        
+        //clone = PhotonNetworkController.createNetObject(projectile.name, transform.position, transform.rotation).transform;
+        clone = Instantiate(projectile, transform.position, transform.rotation).transform;
         clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * bulletSpeed);
     }
 }

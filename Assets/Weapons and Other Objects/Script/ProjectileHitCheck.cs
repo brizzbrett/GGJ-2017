@@ -31,6 +31,7 @@ public class ProjectileHitCheck : MonoBehaviour {
 
     void OnCollisionEnter(Collision hit)
     {
+        print("lalalala");
         if (hit.gameObject.CompareTag("Floor"))
         {
             Debug.Log("Hit " + hit.collider.gameObject.name);
@@ -55,7 +56,10 @@ public class ProjectileHitCheck : MonoBehaviour {
             Debug.Log("Hit somethin else?");
         }
 
+
         SoundManager.StartSound(this.GetComponent<Sound>());
+        GameManager.instance.EchoManager.AddPulse(transform.position, 1, 3, 100);
+        Destroy(this.gameObject);
     }
 
     IEnumerator TimedExplosion()

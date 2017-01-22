@@ -63,6 +63,9 @@ public class Player : MonoBehaviour
             hasWeapon = false;
 
         }
+
+
+        //GameManager.instance.EchoManager.AddPulse(transform.position, 1, 10, 100);
     }
 
     void DropWeapon()
