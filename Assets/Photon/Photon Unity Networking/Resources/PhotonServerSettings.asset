@@ -59,4 +59,5 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - ReceiveWorldSeed
   DisableAutoOpenWizard: 1

@@ -64,6 +64,8 @@ public class MoveByKeys : Photon.MonoBehaviour
                     else if (this.body != null)
                     {
                         this.body.AddForce(jump);
+                        GameObject network = GameObject.Find("NetworkControl");
+                        network.GetComponent<PhotonNetworkController>().createNetObject("Box", new Vector3(0, 3, 0), Quaternion.identity);
                     }
                 }
             }
