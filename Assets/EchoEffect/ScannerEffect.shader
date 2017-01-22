@@ -1,6 +1,6 @@
 ﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "Hidden/ScannerEffect"
+Shader "Custom/ScannerEffect"
 {
 	Properties{
 			_Color("Color", Color) = (1, 1, 1, 1)
@@ -11,7 +11,12 @@ Shader "Hidden/ScannerEffect"
 			_Pulses("Pulses",int) = 0
 	}
 	SubShader {
+
+		Blend SrcAlpha OneMinusSrcAlpha
 		Pass {
+		
+			Name "SCANNEREFFECT"
+
 			Tags { "RenderType"="Opaque" }
 		
 			CGPROGRAM
@@ -19,49 +24,48 @@ Shader "Hidden/ScannerEffect"
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 
-			
-
 			struct v2f {
 				float4 pos : SV_POSITION;
 				float3 worldPos : TEXCOORD1;
 			};
 
+
 			v2f vert(appdata_base v) {
 				v2f o;
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				//o.color = i.texcoord1;
 				return o;
 			}
 			
-			float4 _Color;
+			 float4 _Color;
 			 float3 _Centers[25];
-			float3 _Center2;
+			 float3 _Center2;
 			 float _Strengths[25];
 			 float _Radius[25];
+			 
 			int _Pulses;
-
-			fixed4 frag(v2f i) : COLOR {
+			float4 frag(v2f i) : SV_Target {
 				float preVal = 0;
 				float val = 0;
+				_Color.r = 1; _Color.g = _Color.b = 0; 
 				for (int j = 0; j < 20; j++)
 				{
 					float dist = distance(_Centers[j], i.worldPos);
-					val = 1 - step(dist, _Radius[j] - _Strengths[j] * 0.1) * 0.5;
-					val = step(_Radius[j] - _Strengths[j] * 1.5, dist) * step(dist, _Radius[j]) * val;
+					//val = 1 - step(dist, diff * 0.1) * 0.5;
+					//val = step(diff * 1.5, dist) * step(dist, _Radius[j]) * val;
+					float inner = _Radius[j] * .09 * _Strengths[j];
+					float outer = _Radius[j] * .1 * _Strengths[j];
+					if (_Radius[j] == 0)
+						continue;
+					val = sin(3.14159*(dist - inner) / (outer - inner));
 					
-					if (j > 0)
-					{
-						val = step(.001, val + preVal);
-					}
-					//
-					preVal = val;
-					//dist = distance(_Center2, i.worldPos);
-					//float val2 = 1 - step(dist, _Radius2 - 0.1) * 0.5;
-					//val2 = step(_Radius2 - 1.5, dist) * step(dist, _Radius2) * val2;
-					//val = step(0.001, val + val2);
-					//val = val2;
+					val = step(inner, dist) * step(dist, outer)* val;
+
+					//val = step(0,j-1) * step(.001, val + preVal);// *lerp(1, 0, dist / 180);
+					preVal += val;
 				}
-				return fixed4(val * _Color.r, val * _Color.g,val * _Color.b, 1.0);
+				return float4(preVal * _Color.r, preVal * _Color.g, preVal * _Color.b, 1);
 			}
 
 			ENDCG
