@@ -22,25 +22,25 @@ public class SoundManager : MonoBehaviour {
     void Start()
     {
         instance = this;
-        instance.echo = GetComponent<EchoObject>();
+        
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        StartSound(collider.gameObject.GetComponent<Sound>());
+        Sound sound = collider.gameObject.GetComponent<Sound>();
+        if (sound)
+            StartSound(sound);
     }
 
     //object hit or emitting the sound
     public static void StartSound(Sound sound_source)
     {
-        if(Time.time < 0.3f)
-            return;
         float distance = Vector3.Distance(sound_source.transform.position, instance.transform.position);
         Sound sound = sound_source.GetComponent<Sound>();
         if (sound)
         {
             instance.StartCoroutine(PlaySound(distance, sound));
-            instance.echo.AddPulse(sound_source.transform.position, sound.frequency, sound.length, 5.0f);
+            GameManager.instance.EchoManager.AddPulse(sound_source.transform.position, sound.frequency, 90, 80);
         }
     }
 

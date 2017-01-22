@@ -61,16 +61,16 @@ public class EchoObject : MonoBehaviour {
             }
             
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                AddPulse(hit.point, Random.Range(20,40), Random.Range(10, 90), Random.Range(10, 30));
-            }
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
+        //
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        AddPulse(hit.point, Random.Range(20,40), Random.Range(10, 90), Random.Range(10, 30));
+        //    }
+        //}
         EffectMaterial.SetVectorArray("_Centers", Centers);
         EffectMaterial.SetFloatArray("_Radius", Radius);
         EffectMaterial.SetFloatArray("_Strengths", Strengths);
@@ -89,11 +89,10 @@ public class EchoObject : MonoBehaviour {
                 InUse[i] = 1;
                 Pulses += 1;
                 Strengths[i] = strength;
+                Debug.Log("Pulse Generated");
                 return;
             }
         }
-
-        
     }
 
     public void PulseDie(int i)

@@ -1,69 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DungeonArchitect;
 
 
 public class GameManager : MonoBehaviour {
-    public static float pre_round_length;// 30 seconds to place the flag before the round begins
 
-    public static bool ctf_mode = false; //playing in capture the flag mode
+    static public GameManager instance;
+    public EchoObject EchoManager;
 
-    public float round_timer;
-    private bool round_started; //used to tell if we're in pre-round mode
- 
+
     public Player player1;
     public Player player2;
 
-    public GameObject p1Flag;
-    public GameObject p2Flag;
+    public GameObject playerGameObj;
 
-    public GameObject p1StartPad;
-    public GameObject p2StartPad;
+    public GameObject p1StartPad = null;
+    public GameObject p2StartPad = null;
+
+    public bool round_started = false;
 
 	// Use this for initialization
-	void Start () {
-        StartPreRound();
+	void Awake () {
+        instance = this;
 	}
-	
+    private void Start()
+    {
+        EchoManager = GetComponent<EchoObject>();
+    }
 	// Update is called once per frame
-	void Update () {
-        if(!round_started)
+    public static void AddStartPad(GameObject sp)
+    {
+        Debug.Log("Add Start Pad");
+        if (!instance.p1StartPad)
+            instance.p1StartPad = sp;
+        else if (!instance.p2StartPad)
+            instance.p2StartPad = sp;
+        else
+            Destroy(sp);
+
+        Debug.Log("p1sp is " + instance.p1StartPad.transform.position);
+
+        if (instance.p1StartPad && !instance.round_started)
         {
-            round_timer -= Time.deltaTime;
-            if(round_timer <= 0)
-            {
-                round_started = true;
-                StartRound();
-                round_timer = pre_round_length;
-            }    
+            instance.round_started = true;
+            instance.StartRound();
         }
-	}
+    }
 
     void StartRound()
     {
-        if(!player1)
-            return;
+        player1 = Instantiate(playerGameObj).GetComponent<Player>();
+        player1.my_startpad = instance.p1StartPad;
         player1.Respawn();
 
-        if (!player2)
-            return;
-        player2.Respawn();
     }
-
-    void StartPreRound()
-    {
-        round_timer = pre_round_length;
-        round_started = false;
-        if (!ctf_mode)
-        {
-            Debug.Log("Ctf mode is " + ctf_mode);
-            if (p1Flag)
-                p1Flag.gameObject.SetActive(false);
-            if (p2Flag)
-                p2Flag.gameObject.SetActive(false);
-        }
-        //decide where to spawn players
-    }
-
 
 }

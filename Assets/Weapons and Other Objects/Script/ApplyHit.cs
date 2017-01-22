@@ -30,6 +30,6 @@ public class ApplyHit : MonoBehaviour {
      } 
  
      void DelayedDetonate(){
-        //this.GetComponent<Player>().Respawn();
+        this.GetComponent<Player>().Death();
      }
 }

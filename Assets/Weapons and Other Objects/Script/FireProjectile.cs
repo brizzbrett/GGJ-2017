@@ -12,11 +12,17 @@ public class FireProjectile : MonoBehaviour {
 	}
 
     void Update () 
-    {   
-        if (Input.GetButtonDown("Fire1")) 
+    {
+        if (Input.GetButtonDown("Fire1"))
         {
             FireOneProjectile();
-            SoundManager.StartSound(this.GetComponent<Sound>());
+            Debug.Log("Proj sound");
+            if (GetComponent<Sound>())
+                SoundManager.StartSound(GetComponent<Sound>());
+            else
+            {
+                Debug.Log("No SOUND~!");
+            }
         }
     }
     void FireOneProjectile()

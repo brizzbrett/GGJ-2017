@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -82,27 +82,16 @@ public class Player : MonoBehaviour
 
     public void Death()
     {
-        Vector3 start_pad_pos = my_startpad.transform.position;
-        start_pad_pos.y += .3f;
-        transform.position = my_startpad.transform.position;
-        transform.rotation = my_startpad.transform.rotation;
-
-        if (GameManager.ctf_mode)
-        {
-            for (int i = 0; i < transform.childCount - 1; i++)
-            {
-                Transform child = transform.Find("flag");
-
-                child.transform.parent = null;
-
-            }
-        }
+        /*
+        Respawn();
+        */
+        //Game over. Please fix ths later. thx
+        Application.Quit();
     }
     public void Respawn()
     {
-        Debug.Log("Respawn");
         Vector3 start_pad_pos = my_startpad.transform.position;
-        
+        Debug.Log("SP pos " + start_pad_pos);
         start_pad_pos.y += .3f;//go up a litte bit
 
         transform.position = start_pad_pos;
