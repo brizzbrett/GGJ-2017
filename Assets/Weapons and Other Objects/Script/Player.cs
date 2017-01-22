@@ -82,6 +82,8 @@ public class Player : MonoBehaviour
 
     public void Death()
     {
+
+        GameManager.instance.DestroyDungeon(); //destroy the dungeon on death
         /*
         Respawn();
         */

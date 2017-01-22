@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     static public GameManager instance;
     public EchoObject EchoManager;
 
+    public Dungeon dungeon;
+
     public Player player1;
     public Player player2;
 
@@ -21,6 +23,13 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+        dungeon.DestroyDungeon();
+        var config = dungeon.Config;
+        if (config != null)
+        {
+            config.Seed = (uint)(Random.value * uint.MaxValue);
+            dungeon.Build();
+        }
         instance = this;
 	}
     private void Start()
@@ -55,6 +64,11 @@ public class GameManager : MonoBehaviour {
         player1.Respawn();
 
         Debug.Log("Start Round end");
+    }
+
+    public void DestroyDungeon()
+    {
+        dungeon.DestroyDungeon();
     }
 
 }
