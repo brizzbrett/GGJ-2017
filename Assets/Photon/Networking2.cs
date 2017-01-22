@@ -83,6 +83,7 @@ public class Networking2 : Photon.MonoBehaviour {
 
     public void InitPlayers()
     {
+
         Debug.Log("got into InitPlayers");
         if (playerNum == 1)
         {
