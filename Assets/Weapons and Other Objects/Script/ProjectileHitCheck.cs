@@ -31,6 +31,18 @@ public class ProjectileHitCheck : MonoBehaviour {
 
     void OnCollisionEnter(Collision hit)
     {
+        if (hit.gameObject.CompareTag("Player"))
+        {
+            hit.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+
+            Debug.Log(hit.gameObject.name + " hit. Health: " + hit.gameObject.GetComponent<ApplyHit>().hitPoints);
+        }
+        if (hit.gameObject.CompareTag("mannequin"))
+        {
+            hit.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+
+            Debug.Log(hit.gameObject.name + " hit. Health: " + hit.gameObject.GetComponent<ApplyHit>().hitPoints);
+        }
         if (hit.gameObject.CompareTag("Floor"))
         {
             Debug.Log("Hit " + hit.collider.gameObject.name);
