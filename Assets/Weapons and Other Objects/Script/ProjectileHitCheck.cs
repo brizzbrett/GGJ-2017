@@ -54,6 +54,8 @@ public class ProjectileHitCheck : MonoBehaviour {
         {
             Debug.Log("Hit somethin else?");
         }
+
+        SoundManager.StartSound(this.GetComponent<Sound>());
     }
 
     IEnumerator TimedExplosion()

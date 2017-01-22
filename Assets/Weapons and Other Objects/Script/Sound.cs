@@ -22,10 +22,16 @@ public class Sound  : MonoBehaviour
         sound = GetComponent<AudioSource>();
         sound.playOnAwake = false;
 
+        Debug.Log(sound + " is sound");
+
         AudioClip clip = sound.clip;
+
+        Debug.Log(clip + " is sound");
+
         length = clip.length;
         frequency = clip.frequency;
         channels = clip.channels;
+
     }
 
     public void playSound()

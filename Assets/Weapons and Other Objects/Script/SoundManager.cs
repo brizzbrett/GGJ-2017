@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 //an Event Manager that calls a delegate on an event
 public class SoundManager : MonoBehaviour {
     static public SoundManager instance;
+    public EchoObject echo;
 
     public delegate void SoundReachesTarget(float distance, Sound sound);//fill in relevant parametes
     public static event SoundReachesTarget on_SRT;
@@ -16,6 +17,12 @@ public class SoundManager : MonoBehaviour {
     { //called when an instance awakes in the game
         instance = this; //set our static reference to our newly initialized instance
 
+    }
+
+    void Start()
+    {
+        instance = this;
+        instance.echo = GetComponent<EchoObject>();
     }
 
     void OnTriggerEnter(Collider collider)
@@ -33,6 +40,7 @@ public class SoundManager : MonoBehaviour {
         if (sound)
         {
             instance.StartCoroutine(PlaySound(distance, sound));
+            instance.echo.AddPulse(sound_source.transform.position, sound.frequency, sound.length, 5.0f);
         }
     }
 

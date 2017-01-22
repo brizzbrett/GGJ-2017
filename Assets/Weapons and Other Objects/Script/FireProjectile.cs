@@ -16,12 +16,13 @@ public class FireProjectile : MonoBehaviour {
         if (Input.GetButtonDown("Fire1")) 
         {
             FireOneProjectile();
+            SoundManager.StartSound(this.GetComponent<Sound>());
         }
     }
     void FireOneProjectile()
     {
         Transform clone;
-        Vector3 localOffset = transform.position;
+        Vector3 localOffset = transform.GetChild(0).position;
 
         clone = Instantiate(projectile, localOffset, transform.rotation);
         clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * bulletSpeed);

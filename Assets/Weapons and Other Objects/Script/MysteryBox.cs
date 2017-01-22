@@ -22,23 +22,50 @@ public class MysteryBox : MonoBehaviour {
         float total_move = 0;
         Vector3 up = loot.transform.up;
 
+        Quaternion bRotation = top.rotation;
+        Vector3 bPosition = top.position;
+
        
         for (float time = 0; time < duration; time += Time.deltaTime)
         {
+            if (time == 0)
+            {
+                bRotation = top.rotation;
+                bPosition = top.position;
+            }
             float curr_rotation = rotation * Time.deltaTime;
             top.RotateAround(pivot.position, pivot.right, curr_rotation);
             total_rotation += curr_rotation;
 
             Vector3 up_distance = up * move_up_loot * Time.deltaTime;
-            loot.transform.position += up_distance;
+
+            if(loot)
+                loot.transform.position += up_distance;
+
             total_move += up_distance.magnitude;
 
             yield return null;
         }
 
         top.RotateAround(pivot.position, pivot.right, (rotation - total_rotation));
-        loot.transform.position += up * ( move_up_loot - total_move );
+        if (loot)
+            loot.transform.position += up * ( move_up_loot - total_move );
+
+        StartCoroutine(BoxRegenTimer(top, bRotation, bPosition));
+
         yield break;
+       
+    }
+
+    IEnumerator BoxRegenTimer(Transform top, Quaternion rot, Vector3 pos)
+    {
+        top.rotation = rot;
+        top.position = pos;
+        this.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(60.0f);
+
+        this.gameObject.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
+        this.is_opened = false;
     }
 
     void OnTriggerEnter(Collider col)
@@ -48,7 +75,7 @@ public class MysteryBox : MonoBehaviour {
 
         if ((col.gameObject.tag == "Player") || (col.gameObject.tag == "MainCamera"))
         {
-
+            Debug.Log("poooopp");
             is_opened = true;
 
             int index = Random.Range(0, weapons.Length );

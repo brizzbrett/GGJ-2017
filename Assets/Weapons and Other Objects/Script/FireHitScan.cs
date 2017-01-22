@@ -19,6 +19,7 @@ public class FireHitScan : MonoBehaviour {
         {
             Debug.Log("Clicking");
             FireOneShot();
+            SoundManager.StartSound(this.GetComponent<Sound>());
         }
     }
  
@@ -34,6 +35,7 @@ public class FireHitScan : MonoBehaviour {
             Debug.Log("Hit " + hit.collider.gameObject.name);
 
             hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+
         }
         else
         {
