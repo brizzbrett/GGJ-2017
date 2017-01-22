@@ -8,9 +8,7 @@ public class StartPad : MonoBehaviour {
     void Start()
     {
         Debug.Log("SP Start");
-
         GameManager.AddStartPad(transform.gameObject);
     }
-	
 	
 }

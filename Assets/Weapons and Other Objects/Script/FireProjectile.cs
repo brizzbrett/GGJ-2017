@@ -8,7 +8,7 @@ public class FireProjectile : MonoBehaviour {
 
 	void Start () 
     {
-    
+        
 	}
 
     void Update () 
@@ -28,9 +28,11 @@ public class FireProjectile : MonoBehaviour {
     void FireOneProjectile()
     {
         Transform clone;
-        Vector3 localOffset = transform.GetChild(0).position;
+        Transform projetile = transform.GetChild(0);
+        Vector3 localOffset = projectile.position;
 
-        clone = Instantiate(projectile, localOffset, transform.rotation);
+        //clone = Instantiate(projectile, localOffset, transform.rotation);
+        clone = PhotonNetworkController.createNetObject(projectile.name, transform.position, transform.rotation).transform;        
         clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * bulletSpeed);
     }
 }

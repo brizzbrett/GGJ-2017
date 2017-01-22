@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log("p1sp is " + instance.p1StartPad.transform.position);
 
-        if (instance.p1StartPad && !instance.round_started)
+        if (instance.p1StartPad && instance.p2StartPad && !instance.round_started)
         {
             instance.round_started = true;
             instance.StartRound();
@@ -58,10 +58,12 @@ public class GameManager : MonoBehaviour {
 
     void StartRound()
     {
-        player1 = Instantiate(playerGameObj).GetComponent<Player>();
+        Debug.Log("Start Round");
+        player1 = Networking2.CreatePlayer(p1StartPad.transform.position, p2StartPad.transform.position).GetComponent<Player>() ;
         player1.my_startpad = instance.p1StartPad;
         player1.Respawn();
 
+        Debug.Log("Start Round end");
     }
 
     public void DestroyDungeon()
